@@ -36,19 +36,17 @@ GoAccess的安装方法，请参考官方的[安装手册](https://goaccess.io/d
 
 ### Docker镜像文件
 
-```
-FROM allinurl/goaccess:latest
-
-MAINTAINER Warnier-zhang <warnier.zhang@gmail.com>
-
-# 设置中文时区
-RUN apk add tzdata
-ENV TIME_ZONE=Asia/Shanghai
-RUN /bin/cp /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone
-
-# 设置中文语言
-ENV LANG zh_CN.UTF-8
-```
+    FROM allinurl/goaccess:latest
+    
+    MAINTAINER Warnier-zhang <warnier.zhang@gmail.com>
+    
+    # 设置中文时区
+    RUN apk add tzdata
+    ENV TIME_ZONE=Asia/Shanghai
+    RUN /bin/cp /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone
+    
+    # 设置中文语言
+    ENV LANG zh_CN.UTF-8
 
 运行`docker image build -t goaccess:1.3 .`命令生成自定义镜像文件。（**注意：从发布1.3版本开始，GoAccess正式支持中文。因此，请选择1.3及更新版本的GoAccess！**）
 
@@ -58,19 +56,17 @@ ENV LANG zh_CN.UTF-8
 
 首先，分别新建`/docker/goaccess/data`、`/docker/goaccess/html`、`/docker/tomcat/logs`目录，在`/docker/goaccess/data`目录中新建一个文本文件`goaccess.conf`，然后，拷贝并写入[链接的内容](https://raw.githubusercontent.com/allinurl/goaccess/master/config/goaccess.conf)，接下来，修改如下的部分参数。
 
-```
-time-format %H:%M:%S
-date-format %d/%b/%Y
-
-# Tomcat Log Format
-log-format %h %^ %^ [%d:%t %^] "%r" %s %b
-
-port 7890
-real-time-html true
-ws-url ws://192.168.99.100:7890/
-log-file /srv/logs/localhost_access_log.2019-02-26.txt
-config-file /srv/data/goaccess.conf
-```
+    time-format %H:%M:%S
+    date-format %d/%b/%Y
+    
+    # Tomcat Log Format
+    log-format %h %^ %^ [%d:%t %^] "%r" %s %b
+    
+    port 7890
+    real-time-html true
+    ws-url ws://192.168.99.100:7890/
+    log-file /srv/logs/localhost_access_log.2019-02-26.txt
+    config-file /srv/data/goaccess.conf
 
 * time-format
 * date-format
@@ -81,22 +77,19 @@ config-file /srv/data/goaccess.conf
 * ws-url
 * port
 
-
 ### GoAccess运行方法
 
-```
-docker run 
-  --restart=always 
-  -d 
-  -p 7890:7890 
-  -v "/docker/goaccess/data:/srv/data"         
-  -v "/docker/goaccess/html:/srv/report"       
-  -v "/docker/tomcat/logs:/srv/logs"           
-  --name=goaccess 
-  goaccess:1.3
-```
+    docker run 
+      --restart=always 
+      -d 
+      -p 7890:7890 
+      -v "/docker/goaccess/data:/srv/data"         
+      -v "/docker/goaccess/html:/srv/report"       
+      -v "/docker/tomcat/logs:/srv/logs"           
+      --name=goaccess 
+      goaccess:1.3
 
-### 参考资料
+## 参考资料
 
 1. [官方网站](https://goaccess.io/)；
 2. [Github官方仓库](https://github.com/allinurl/goaccess)；
