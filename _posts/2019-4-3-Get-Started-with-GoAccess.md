@@ -35,7 +35,6 @@ GoAccess的安装方法，请参考官方的[安装手册](https://goaccess.io/d
 虽然GoAccess提供了官方的[Docker镜像文件](https://hub.docker.com/r/allinurl/goaccess)，但是这个镜像文件的默认语言与时区是英文，如果需要生成中文版本的HTML分析报告，就要把语言与时区切换成中文，最简单的做法就是基于官方的镜像文件自定义。
 
 ### Docker镜像文件
-
 ```dockerfile
 FROM allinurl/goaccess:latest
 
@@ -57,7 +56,6 @@ ENV LANG zh_CN.UTF-8
 ### GoAccess配置文件 
 
 首先，分别新建`/docker/goaccess/data`、`/docker/goaccess/html`、`/docker/tomcat/logs`目录，在`/docker/goaccess/data`目录中新建一个文本文件`goaccess.conf`，然后，拷贝并写入[链接的内容](https://raw.githubusercontent.com/allinurl/goaccess/master/config/goaccess.conf)，接下来，修改如下的部分参数。
-
 ```text
 time-format %H:%M:%S
 date-format %d/%b/%Y
@@ -83,7 +81,6 @@ config-file /srv/data/goaccess.conf
 
 
 ### GoAccess运行方法
-
 ```text
 docker run 
   --restart=always 
