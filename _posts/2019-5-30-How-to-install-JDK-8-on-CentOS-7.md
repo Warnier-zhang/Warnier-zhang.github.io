@@ -44,6 +44,19 @@ PATH=$JAVA_HOME/bin:$PATH
 export JAVA_HOME JRE_HOME CLASSPATH PATH
 ```
 
+## 查看JDK版本号
+
+在安装完成之后，打开终端，运行下面的命令：
+
+```text
+java -version
+```
+
+若出现如下截图，则表明安装成功！
+
+![JDK 8版本号][4]
+
 [1]: https://www.jetbrains.com/zh-cn/lp/devecosystem-2019/java/
 [2]: https://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8-2177648.html
 [3]: ../images/2019/5/30/1.png
+[4]: ../images/2019/5/30/2.png
