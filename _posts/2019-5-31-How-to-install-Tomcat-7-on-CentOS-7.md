@@ -50,8 +50,8 @@ export JAVA_OPTS="-server -Xms512M -Xmx512M -XX:PermSize=128M -XX:MaxPermSize=25
 
 ## 参考资料
 
-1. ![Tomcat configuration recommendations][4]
-2. ![Tomcat 8 setenv.sh][5]
+1. [Tomcat configuration recommendations][4]
+2. [Tomcat 8 setenv.sh][5]
 
 [1]: https://tomcat.apache.org/download-70.cgi
 [2]: ../images/2019/5/31/1.png
