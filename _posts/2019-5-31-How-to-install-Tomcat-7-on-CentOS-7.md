@@ -3,7 +3,7 @@ layout: post
 title: How to install Tomcat 7 on CentOS 7
 ---
 
-**Tomcat**是一款免费、开源的Web服务器，由Apache软件基金会负责开发、维护，主要是实现了Servlet、JSP等Java EE规范。本文的目的是演示CentOS 7安装Tomcat 7的方法。
+Tomcat是一款免费、开源的Web服务器，由Apache软件基金会负责开发、维护，主要是实现了Servlet、JSP等Java EE规范。本文的目的是演示CentOS 7安装Tomcat 7的方法。
 
 ## 安装方法
 
@@ -48,6 +48,13 @@ export JAVA_OPTS="-server -Xms512M -Xmx512M -XX:PermSize=128M -XX:MaxPermSize=25
 
 ![Tomcat运行时参数][3]
 
+## 参考资料
+
+1. ![Tomcat configuration recommendations][4]
+2. ![Tomcat 8 setenv.sh][5]
+
 [1]: https://tomcat.apache.org/download-70.cgi
 [2]: ../images/2019/5/31/1.png
 [3]: ../images/2019/5/31/2.png
+[4]: https://docs.oracle.com/cd/E40518_01/integrator.311/integrator_install/src/cli_ldi_server_config.html
+[5]: https://gist.github.com/patmandenver/cadb5f3eb567a439ec01
