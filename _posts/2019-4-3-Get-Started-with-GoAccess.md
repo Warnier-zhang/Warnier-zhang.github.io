@@ -1,9 +1,7 @@
 ---
 layout: post
-title: GoAccess入门教程
+title: Get Started with GoAccess
 ---
-
-## GoAccess介绍
 
 GoAccess是**Unix-like**系统环境下的一款开源的、实时的网络日志分析工具，用户可以通过浏览器或者命令行来查看、导出分析结果。
 
