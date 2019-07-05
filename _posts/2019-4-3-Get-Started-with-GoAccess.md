@@ -3,36 +3,20 @@ layout: post
 title: Get Started with GoAccess
 ---
 
-GoAccess是**Unix-like**系统环境下的一款开源的、实时的网络日志分析工具，用户可以通过浏览器或者命令行来查看、导出分析结果。
+GoAccess是Linux系统环境下的一款开源的、实时的网络日志分析工具，用户可以通过浏览器或者命令行来查看、导出分析结果。
 
-## GoAccess特性
+[GoAccess特性][1]
 
-GoAccess会解析特定的日志文件，并对如下的方方面面进行统计、分析：
+## 安装方法
 
-* 失败请求次数；
-* 请求处理时延；
-* 独立访客人数；
-* 请求路径分布；
-* 静态文件访问；
-* 404（页面未找到）次数；
-* 日志文件大小；
-* 用户来源地址；
-* 操作系统参数；
-* 使用的浏览器；
+**GoAccess不支持在Windows系统环境下直接安装，需要借助Cygwin、虚拟机、或者Docker来模拟。** 推荐使用Docker镜像方式安装，具体请访问官方的[安装手册][2]。**需要注意的是从1.3版本开始，GoAccess才正式支持中文语言。因此，请选择1.3及更新版本的GoAccess！**
 
-## GoAccess安装
-
-GoAccess的安装方法，请参考官方的[安装手册](https://goaccess.io/download)。
-
-**注意：GoAccess不支持在Windows环境下直接安装，需要通过Cygwin、虚拟机、或者Docker。**
-
-## GoAccess用法
-
-下面，我们通过Docker来安装GoAccess、并监控Tomcat的Access Log文件，感受一下GoAccess。
-
-虽然GoAccess提供了官方的[Docker镜像文件](https://hub.docker.com/r/allinurl/goaccess)，但是这个镜像文件的默认语言与时区是英文，如果需要生成中文版本的HTML分析报告，就要把语言与时区切换成中文，最简单的做法就是基于官方的镜像文件自定义。
+## 使用用法
 
 ### Docker镜像文件
+
+虽然GoAccess提供了官方的[Docker镜像][3]，但是这个镜像文件的默认语言与时区是英文，如果要生成中文版本的HTML分析报告，就得把语言与时区切换成中文。达到目的的最简单做法就是自定义Docker镜像：
+
 ```dockerfile
 FROM allinurl/goaccess:latest
 
@@ -47,20 +31,16 @@ RUN /bin/cp /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /
 ENV LANG zh_CN.UTF-8
 ```
 
-运行`docker image build -t goaccess:1.3 .`命令生成自定义镜像文件。（**注意：从发布1.3版本开始，GoAccess正式支持中文。因此，请选择1.3及更新版本的GoAccess！**）
+执行`docker image build -t goaccess:1.3 .`命令来编译Docker镜像。
 
-下一步就是配置GoAccess。
+### goaccess.conf 
 
-### GoAccess配置文件 
+`goaccess.conf`，是GoAccess的配置文件，存储在`/srv/data`目录中，完整的参数列表请参考[GoAccess配置参数][4]。GoAccess的核心配置参数及其示例如下所示：
 
-首先，分别新建`/docker/goaccess/data`、`/docker/goaccess/html`、`/docker/tomcat/logs`目录，在`/docker/goaccess/data`目录中新建一个文本文件`goaccess.conf`，然后，拷贝并写入[链接的内容](https://raw.githubusercontent.com/allinurl/goaccess/master/config/goaccess.conf)，接下来，修改如下的部分参数。
 ```text
 time-format %H:%M:%S
 date-format %d/%b/%Y
-
-# Tomcat Log Format
 log-format %h %^ %^ [%d:%t %^] "%r" %s %b
-
 port 7890
 real-time-html true
 ws-url ws://192.168.99.100:7890/
@@ -68,17 +48,42 @@ log-file /srv/logs/localhost_access_log.2019-02-26.txt
 config-file /srv/data/goaccess.conf
 ```
 
-* time-format
-* date-format
-* config-file
-* log-file
-* log-format
-* real-time-html
-* ws-url
-* port
+其中，各个参数的意义如下：
 
+* time-format 
+    
+    时间格式，请参考[strftime格式][5]。
+    
+* date-format 
 
-### GoAccess运行方法
+    日期格式，请参考[strftime格式][5]。
+
+* config-file 
+    
+    自定义的配置文件路径，如果设置这个参数，就会覆盖全局的默认配置参数。
+    
+* log-file 
+    
+    日志文件路径，Tomcat的日志文件默认输出到`$CATALINA_HOME/logs`目录中。
+    
+* log-format 
+
+    日志文件格式，请参考[GoAccess配置参数][6]中的log-format部分。查看`$CATALINA_HOME/conf/server.xml`文件，可以得出Tomcat的日志输出格式是`%h %l %u %t &quot;%r&quot; %s %b`（具体含义参考[Tomcat日志格式][7]），GoAccess的日志解析格式必须与之一一对应。
+    
+* real-time-html 
+
+    是否实时输出HTML报告。
+    
+* ws-url 
+    
+    WebSocket服务器地址。
+    
+* port 
+
+    WebSocket服务器端口。
+
+### 启动GoAccess
+
 ```text
 docker run 
   --restart=always 
@@ -91,12 +96,15 @@ docker run
   goaccess:1.3
 ```
 
-## 参考资料
+执行上述命令启动GoAccess，其中，`/srv/data`是配置文件目录，`/srv/report`是分析结果目录，`/srv/logs`是日志文件目录，最终生成的HTML报告示例如下：
 
-1. [官方网站](https://goaccess.io/)；
-2. [Github官方仓库](https://github.com/allinurl/goaccess)；
-3. [Analyze Tomcat logs with GoAccess](http://www.fepede.net/blog/2016/05/analyze-tomcat-logs-goaccess/)；
-4. [GoAccess中文界面显示配置](https://blog.51cto.com/linuxg/2335007)；
-5. [Docker容器时区设置与中文字符支持](https://segmentfault.com/a/1190000005026503)；
-6. [Using Docker containers as localhost on Mac/Windows](https://www.jhipster.tech/tips/020_tip_using_docker_containers_as_localhost_on_mac_and_windows.html)；
+![GoAccess分析报告][8]
 
+[1]: https://goaccess.io/features
+[2]: https://goaccess.io/download#docker
+[3]: https://hub.docker.com/r/allinurl/goaccess
+[4]: https://raw.githubusercontent.com/allinurl/goaccess/master/config/goaccess.conf
+[5]: https://www.php.net/manual/zh/function.strftime.php
+[6]: https://goaccess.io/man#options
+[7]: https://tomcat.apache.org/tomcat-7.0-doc/api/org/apache/catalina/valves/AccessLogValve.html
+[8]: ../images/2019/4/3/1.png
