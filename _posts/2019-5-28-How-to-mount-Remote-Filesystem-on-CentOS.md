@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to mount Remote Linux or Windows Directory on Another Linux
+title: How to mount Remote Filesystem on CentOS
 ---
 
 在Linux主机之间共享文件有CIFS、NFS等2种常用方法。在Windows主机之间共享文件是由CIFS服务实现的。因此，本文主要介绍由CIFS方式实现的在一台Linux主机中挂载另一台Windows或Linux主机的文件夹。
