@@ -119,12 +119,12 @@ oracle11gR2.password=#
 
     `context`元素用来设置生成一套样板代码的运行环境。一个`context`元素对应着一种数据库环境，`generatorConfig.xml`中可以有多个`context`元素。
     
-    ****属性****
+    **属性**
     
     * id： 运行环境ID;
     * targetRuntime：设置生成哪种版本的样板代码，若值为“MyBatis3”，则生成符合MyBatis 3规范的代码。
     
-    ****子元素****
+    **子元素**
     
     * jdbcConnection
     
@@ -134,7 +134,7 @@ oracle11gR2.password=#
         
         类型转换器。
         
-        ****属性****
+        **属性**
         
         * forceBigDecimals：若值为true，则把`DECIMAL`和`NUMERIC`类型转换成`java.math.BigDecimal`，否则转换成`Integer`或`Long`。
             
@@ -142,7 +142,7 @@ oracle11gR2.password=#
     
         生成POJO类。
         
-        ****属性****
+        **属性**
         
         * targetPackage：设置包名。
         * targetProject：设置POJO类文件的存储路径。
@@ -151,7 +151,7 @@ oracle11gR2.password=#
     
         生成SQL Map XML文件。
         
-        ****属性****
+        **属性**
         
         * targetPackage：设置包名。
         * targetProject：设置SQL Map XML文件的存储路径。
@@ -160,7 +160,7 @@ oracle11gR2.password=#
     
         （可选）生成DAO接口。
         
-        ****属性****
+        **属性**
           
         * type: 若值为“XMLMAPPER”时，则生成适用于MyBatis 3.x的Mapper接口，并与SQL Map XML文件进行绑定。
         * targetPackage：设置包名。
@@ -170,14 +170,14 @@ oracle11gR2.password=#
         
         指定表。
         
-        ****属性****
+        **属性**
         
         * tableName：设置表名；
         * domainObjectName：设置POJO类名；
         * mapperName：设置DAO接口名；
         * useActualColumnNames：若值为true，则生成的样板代码中的属性名与列名相同；若值为false，则如果列名是以“_”分隔的，属性名就是列名的“Camel Case”格式的。
         
-        ****子元素****
+        **子元素**
         
         * generatedKey 生成自增长的主键ID。
 
