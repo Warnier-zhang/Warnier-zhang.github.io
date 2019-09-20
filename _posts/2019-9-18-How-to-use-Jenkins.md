@@ -100,6 +100,8 @@ Jenkins界面显示语言的中文翻译不全，如果中、英文混在一起�
 ![配置JDK 8][14]
 ![配置Apache Maven 3][15]
 
+>注：`settings.xml`中包含了Maven私服的配置参数。
+
 ## Jenkins使用方法
 
 点击**New Item**来新增一个作业，填写完名称、选中Maven Project等栏目后保存。
@@ -168,9 +170,9 @@ docker image pull $IMAGE_NAME
 docker container run -d -p 8080:8080 --name test $IMAGE_NAME
 ```
 
-这段代码的意思是：首先，删除由旧的、同名的Docker镜像以及以它为蓝本创建的容器；然后，从Docker registry中拉取新的Docker镜像；最后，部署新的Docker容器，暴露8080端口以供访问。
+这段代码的意思是：首先，删除旧的、同名的Docker镜像以及以它为蓝本创建的容器；然后，从Docker registry中拉取新的Docker镜像；最后，部署新的Docker容器，暴露8080端口以供访问。
 
-最后，打开浏览器访问`http://119.3.227.133:8080/test/md5?text=123456`，应该可以看到如下图所示的结果：
+最后，打开浏览器访问`http://[host]:8080/test/md5?text=123456`，应该可以看到如下图所示的结果：
 
 ![测试结果][23]
 
