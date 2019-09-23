@@ -83,8 +83,8 @@ Docker registry内置了一套HTTP API用来查看、管理仓库中的镜像，
     ```
     ![列出某个Docker镜像的所有标签][5]
 
-[1]: ../images/2019/23/1.png
+[1]: ../images/2019/9/23/1.png
 [2]: https://github.com/Warnier-zhang/Test
-[3]: ../images/2019/23/2.png
-[4]: ../images/2019/23/3.png
-[5]: ../images/2019/23/4.png
+[3]: ../images/2019/9/23/2.png
+[4]: ../images/2019/9/23/3.png
+[5]: ../images/2019/9/23/4.png
