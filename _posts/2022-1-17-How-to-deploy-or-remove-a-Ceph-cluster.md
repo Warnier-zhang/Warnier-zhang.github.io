@@ -45,6 +45,9 @@ Ceph **v15.2.0**（Octopus）**及以上版本**推荐使用`cephadm`工具来�
    ceph orch apply osd --all-available-devices
    ```
    > 执行`ceph osd tree`命令查看对象存储设备信息；
+
+
+
 ## 删除Ceph存储集群
 
 在Ceph存储集群**运行Monitor进程**的节点上：
