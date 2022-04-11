@@ -1,75 +1,80 @@
 ---
 layout: post
-title: 如何本地调试Kubernetes集群上的Spring Cloud微服务
+title: Logback配置
 ---
 
-一种常见的方法——在本机上搭建一套开发环境，哪怕只是其中的一个微服务出现问题了，也要把整个系统完整地跑起来。以`a-service`为例，如果要调试、修复`a-service`的bug，除了要启动`a-service`本身之外，还要启动Eureka、Config、Gateway等等。
+Logback配置文件（`logback.xml`或`logback-spring.xml`）的结构如下：
 
-费事！费时！费力！
+![配置文件结构](../images/2022/4/11/1.png)
 
-能不能不启动Eureka、Config这些中间件，直接使用Kubernetes集群里运行好的呢？答案当然是可以的，具体的方法如下。
+配置文件的根元素是`<configuration>`，`<configuration>`元素下有一个或多个`<appender>`、 `<logger>`元素，除此之外，有且仅有一个`<root>`元素。
 
-## 配置Eureka
+Logback由3个核心组件**Logger**、**Appender**、**Layout**组成。
 
-在Kubernetes集群里，`a-service`通过域名`k8s-eureka`（假设）访问Eureka实例。域名`k8s-eureka`只在集群内生效，在集群外无法使用。在本地开发环境中，如果要访问集群内的Eureka实例，就要把Eureka的IP、端口暴露出来，方法是创建一个`NodePort`或者`LoadBalancer`类型的`Service`。假设外部访问地址为`http://my-eureka:8761`，则按如下方式修改`application.yml`。
+## Logger
 
-```
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://my-eureka:8761/eureka/
-```
+在配置文件（`logback-spring.xml`）中，Logger（日志收集器）对应`<logger>`元素。`<logger>`元素有3个属性：
 
-## 配置Config
+1. name：名称；
+2. level：日志级别，可选值有`TRACE`、`DEBUG`、`INFO`、`WARN`、`ERROR`、`ALL`等等，大小写不敏感；
+3. additivity：是否输出日志到<u>rootLogger配置的Appender</u>中，可选值有`true`、`false`，默认值为`true`。若值设为`false`，则只输出日志到<u>当前的`<logger>`元素配置的Appender</u>中。
 
-一般情况下，`a-service`是通过Eureka来连接Config，即：
+`<logger>`元素下有一个或多个`<appender-ref ref="XXX">`元素，`<appender-ref ref="XXX">`元素用来匹配Logger的日志输出源。
 
-```
-spring:
-  config:
-    import: "optional:configserver:"
-  cloud:
-    config:
-      discovery:
-        enabled: true
-        service-id: SPRING-CLOUD-CONFIG
-      label: master
-      name: a-service
-      profile: default
-```
+### rootLogger
 
-要知道，Eureka和Config都是运行在Kubernetes集群里面，**通过Eureka获得的Config的IP、端口**，都是只在集群内生效，在集群外无法使用。因此，在本地开发环境中，如果要访问集群内的Config实例，就不能通过Eureka来访问。只能是先把Config实例的IP、端口暴露出来，然后通过这个IP、地址（假设为：`http://my-config:8888`）直接连过去，即：
+rootLogger（根日志输出器）是一个特殊的Logger，用来配置公共的日志级别、日志输出源。对应`<root>`元素，配置和`<logger>`元素大同小异，相同的地方是有一个或多个`<appender-ref ref="XXX">`子元素，不同的地方是只有level属性，没有name、additivity属性。
 
-```
-spring:
-  config:
-    import: "optional:configserver:http://my-config:8888"
-  cloud:
-    config:
-      label: master
-      name: a-service
-      profile: dev
-```
+## Appender
 
-## 修改`a-service`的服务名
+`<appender>`元素用来配置日志输出源，常见的日志输出源有：
 
-为什么要把服务名`a-service`重命名为`a-service-dev`？原因是本地的`a-service`与集群的`a-service`最终都是注册到同一个Eureka上，如果不区分两者的服务名，就无法确定实际调用的是哪一个`a-service`。代码如下：
+- 终端；
+- 文件；
+- 数据库，如：MySQL、PostgreSQL、Oracle等；
+- 消息队列；
+- UNIX/Linux系统日志；
+
+![Appender配置元素结构](../images/2022/4/11/2.png)
+
+`<appender>`元素有2个属性：
+
+1. name：名称，一般大写；
+2. class：日志输出源实现类名（含包名）；
+
+`<appender>`元素下有一个或多个~~`<layout>`~~、`<encoder>`、`<filter>`等元素。
+
+~~`<layout>`~~、`<encoder>`元素用来配置日志输出的格式、内容。
+
+`<filter>`元素用来过滤日志内容，不常用，本篇文章暂不涉及。
+
+## Encoder、Layout
+
+Encoder、Layout用来定义日志输出的格式、内容，对应如上所述`<layout>`、`<encoder>`元素，它们都只有1个属性——`class`，用来配置具体的实现类。
+
+<u>老版本推荐使用`<layout>`元素，新版本推荐使用`<encoder>`元素</u>。在新版本中，如果要使用`<layout>`元素，一般是把`<layout>`作为`<encoder>`的子元素，即：
 
 ```
-spring:
-  application:
-    name: a-service-dev
+<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+    	<pattern>XXX</pattern>
+    </layout>
+</encoder>
 ```
 
-## 修改`a-service`的客户端
+`<encoder>`元素`class`属性的默认值是`ch.qos.logback.classic.encoder.PatternLayoutEncoder`，**PatternLayoutEncoder**扩展了**LayoutWrappingEncoder**，内部直接封装了一个PatternLayout实例。因为**PatternLayout** 是最常用的一种Layout，所以<u>PatternLayoutEncoder成为了最常见、最实用的一个Encoder</u>。
 
-修改`a-service`的客户端的原因同上，代码如下：
+上述代码从而可以简写成：
 
 ```
-@FeignClient(name = "A-SERVICE-DEV", path = "/a")
-public interface AClient {
-...
-}
+<encoder>
+	<pattern>XXX</pattern>
+</encoder>
 ```
+
+`<pattern>`元素用来配置PatternLayout的转换规则，详细的内容请参考[官方的使用说明](https://logback.qos.ch/manual/layouts.html#conversionWord)，下面给出一个例子：
+
+```
+%date{yyyy-MM-dd HH:mm:ss.SSS} %level ${APPLICATION_NAME:-} ${PID:-} %thread %file %line %logger %class %method : %msg %n %exception{full} %n
+```
+
