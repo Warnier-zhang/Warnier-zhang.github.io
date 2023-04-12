@@ -1,6 +1,6 @@
 ---
 layout: post
-title: CentOS Tips & Tricks
+title: CentOS小贴士
 ---
 
 CentOS的温馨小提示，长期更新中……
@@ -23,10 +23,10 @@ CentOS的温馨小提示，长期更新中……
     ```text
     // 检查cifs-utils是否安装
     rpm -q cifs-utils
- 
+     
     // 列出cifs-utils安装路径
     rpm -ql cifs-utils
- 
+     
     // 查看cifs-utils详细信息
     rpm -qi cifs-utils
     ```

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to install Tomcat 7 on CentOS 7
+title: 如何在CentOS 7中安装Tomcat 7
 ---
 
 Tomcat是一款免费、开源的Web服务器，由Apache软件基金会负责开发、维护，主要是实现了Servlet、JSP等Java EE规范。本文的目的是演示CentOS 7安装Tomcat 7的方法。
@@ -16,7 +16,7 @@ Tomcat是一款免费、开源的Web服务器，由Apache软件基金会负责�
     ```
     
 3. 编辑`/etc/profile`文件，配置`CATALINA_HOME`环境变量。
-    
+   
     ```text
     CATALINA_HOME=/usr/local/tomcat/apache-tomcat-7.0.42
     export CATALINA_HOME

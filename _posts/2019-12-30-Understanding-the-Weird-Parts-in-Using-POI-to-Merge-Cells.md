@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Understanding the Weird Parts in Using POI to Merge Cells
+title: Apache POI合并单元格解惑
 ---
 
 Apache POI，是一款用来读写Excel文档的神器。早期，Apache POI只有用Java语言开发的版本，现在，.NET社区已经翻译出C#版本的[NPOI][1]。

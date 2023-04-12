@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to host a private Docker registry
+title: 如何搭建Docker私服
 ---
 
 Docker registry是一款用来托管和分发Docker镜像的应用程序。它是由Docker官方提供的，并以Apache license 2开源。Docker镜像仓库是CI / CD中最重要的基础设施之一。

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to configure SSL/TLS support on Tomcat 7
+title: Tomcat 7配置HTTPS
 ---
 
 HTTPS，是一种安全版本的HTTP协议。HTTPS的安全基础是建立在SSL/TLS协议之上，因此，HTTPS又被称作“HTTP over SSL”。为了保护网站免受黑客骚扰，升级HTTPS得到了大家的共识。本文将介绍Tomcat 7启用SSL/TLS支持的方法。

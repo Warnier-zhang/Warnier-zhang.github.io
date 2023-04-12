@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to use Jenkins
+title: Jenkins用户指南
 ---
 
 Jenkins是一款基于Java开发、以MIT License开源的持续集成（CI）、持续部署（CD）工具，用于自动化地完成编译、打包、测试、部署等任务，从而把开发者从这些繁琐的工作中解放出来，将更多的时间和精力花在理解、实现业务上。

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to install Homebrew in the Third-party way
+title: 如何使用国内源安装Homebrew
 ---
 
 Homebrew，是一款macOS系统必备的软件安装工具，是一种最简单、最灵活的安装UNIX命令行程序的方法。（Homebrew is the missing package manager for macOS. Homebrew is the easiest and most flexible way to install the UNIX tools Apple didn’t include with macOS.）
@@ -55,7 +55,6 @@ Cask Tap是macOS App仓库。
 ## FAQ
 
 1. 执行`brew install`命令一直卡在`Updating Homebrew...`怎么办？
-    
+   
     答案：配置`export HOMEBREW_NO_AUTO_UPDATE=true`环境变量来关闭自动更新程序。
-
 

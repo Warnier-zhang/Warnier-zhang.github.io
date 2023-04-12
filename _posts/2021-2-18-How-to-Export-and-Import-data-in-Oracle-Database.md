@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to Export and Import data in Oracle Database
+title: Oracle数据库备份和恢复
 ---
 
 如何迁移或者备份Oracle数据库？

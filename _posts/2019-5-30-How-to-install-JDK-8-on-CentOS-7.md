@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to install JDK 8 on CentOS 7
+title: 如何在CentOS 7安装JDK 8
 ---
 
 Java是一门功能强大、简单易用的面向对象编程语言，被广泛地用于开发Web后端、移动App等应用程序。使用Java的先决条件是安装Java Development Kit（即JDK），JDK包含了虚拟机、编译器、调试器等用来开发Java应用程序的工具。当前，JDK的最新版本是JDK 12，然而，根据[市场调查][1]的结果，JDK 8仍然是最受欢迎、使用最多的。因此，本文介绍2种CentOS 7安装JDK 8的方法。

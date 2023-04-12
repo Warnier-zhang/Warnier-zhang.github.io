@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Algorithm -- Print Convolution Numbers
+title: 算法-- 打印回形数
 ---
 
 问题：打印逆时针回旋数，例如：当n=5时，输出的回旋数如下所示：

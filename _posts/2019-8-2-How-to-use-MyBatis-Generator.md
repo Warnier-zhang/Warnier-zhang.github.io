@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to use MyBatis Generator
+title: 如何使用MyBatis Generator
 ---
 
 MyBatis Generator，简称“MBG”，是一款MyBatis代码生成器，主要是用来生成数据库表对应的POJO类、SQL Map XML文件、DAO接口，大大减轻了开发者编写数据库层CRUD（Create，Retrieve，Update，Delete）代码的工作量。
@@ -35,7 +35,7 @@ MyBatis Generator，简称“MBG”，是一款MyBatis代码生成器，主要�
     * dependencies 声明JDBC驱动程序；
     
 2. 编写配置文件**generatorConfig.xml**，主要的配置参数如下：
-    
+   
     * jdbcConnection 连接数据库；
     * javaModelGenerator 生成POJO类；
     * sqlMapGenerator 生成SQL Map XML文件；
@@ -131,13 +131,13 @@ oracle11gR2.password=#
         连接数据库，本例子引用`db.properties`文件中的数据库连接参数。
     
     * javaTypeResolver：
-        
+      
         类型转换器。
         
         **属性**
         
         * forceBigDecimals：若值为true，则把`DECIMAL`和`NUMERIC`类型转换成`java.math.BigDecimal`，否则转换成`Integer`或`Long`。
-            
+        
     * javaModelGenerator
     
         生成POJO类。
@@ -161,13 +161,13 @@ oracle11gR2.password=#
         （可选）生成DAO接口。
         
         **属性**
-          
+        
         * type: 若值为“XMLMAPPER”时，则生成适用于MyBatis 3.x的Mapper接口，并与SQL Map XML文件进行绑定。
         * targetPackage：设置包名。
         * targetProject：设置DAO（也就是*Mapper）接口文件的存储路径。
     
     * table
-        
+      
         指定表。
         
         **属性**
@@ -188,9 +188,10 @@ oracle11gR2.password=#
     生成的POJO类实现了`java.io.Serializable`接口。
     
 * org.mybatis.generator.plugins.RowBoundsPlugin
-    
+  
     在生成的DAO接口中增加一个`selectByExampleWithRowbounds`方法来实现分页查询功能。
     
+
 本文到此结束，感谢大家阅读！
     
 ## FAQ

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Get Started with GoAccess
+title: GoAccess入门
 ---
 
 GoAccess是Linux系统环境下的一款开源的、实时的网络日志分析工具，用户可以通过浏览器或者命令行来查看、导出分析结果。
@@ -51,7 +51,7 @@ config-file /srv/data/goaccess.conf
 其中，各个参数的意义如下：
 
 * time-format 
-    
+  
     时间格式，请参考[strftime格式][5]。
     
 * date-format 
@@ -59,11 +59,11 @@ config-file /srv/data/goaccess.conf
     日期格式，请参考[strftime格式][5]。
 
 * config-file 
-    
+  
     自定义的配置文件路径，如果设置这个参数，就会覆盖全局的默认配置参数。
     
 * log-file 
-    
+  
     日志文件路径，Tomcat的日志文件默认输出到`$CATALINA_HOME/logs`目录中。
     
 * log-format 
@@ -75,7 +75,7 @@ config-file /srv/data/goaccess.conf
     是否实时输出HTML报告。
     
 * ws-url 
-    
+  
     WebSocket服务器地址。
     
 * port 

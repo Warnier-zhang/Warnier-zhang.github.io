@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to Recover Data after Commit on Oracle
+title: 如何恢复Oracle误提交的数据
 ---
 
 误删（或者更新）表中的部分数据，并且已经向数据库提交了更改，在没有备份这些数据的情况下，有没有办法恢复到原来的样子？答案是：Yes！Oracle提供了一项叫作**闪回查询**（**Flashback Query**）的特性来帮助我们查看和重建意外删除或更改的受损数据。
