@@ -476,33 +476,71 @@ export KUBECONFIG=/etc/kubernetes/admin.conf
 > 2. 在**所有节点**上，执行如下命令清除Flannel缓存、网卡：
 >
 >    ```
->   # 删除网卡
+>    # 删除网卡
 >    ifconfig cni0 down
 >    ip link delete cni0
 >    ifconfig flannel.1 down
 >    ip link delete flannel.1
-> 
+>       
 >    # 清除缓存
->       rm -rf /var/lib/cni/*
+>    rm -rf /var/lib/cni/*
 >    rm -rf /etc/cni/net.d/*
 >    ```
-> 
+>    
 > 3. 重启所有节点上的`kubelet`；
 
-#### 10、卸载Kubernetes集群
+#### 10、安装metrics-server
+
+首先，添加`metrics-server`的Helm Chart仓库，并生成Values 文件：
+
+```shell
+helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
+helm show values metrics-server/metrics-server > ~/metrics-server-values.yaml
+```
+然后，编辑`metrics-server-values.yaml`文件，找到如下内容所在行，并新增`--kubelet-insecure-tls`参数：
+```
+...
+
+defaultArgs:
+  - --cert-dir=/tmp
+  - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+  - --kubelet-use-node-status-port
+  - --metric-resolution=15s
+  # 新增
+  - --kubelet-insecure-tls
+...
+```
+
+最后，执行如下命令：
+
+```
+helm install -n metrics-server -f metrics-server-values.yaml metrics-server metrics-server/metrics-server
+```
+
+#### 11、安装Kuboard
+
+首先，提前下载好[kuboard-v3-storage-class.yaml](https://addons.kuboard.cn/kuboard/kuboard-v3-storage-class.yaml)文件，并按照如下方式修改该文件：
+
+- 配置`KUBOARD_ENDPOINT`环境变量；
+- 指定`storageClassName`（有2处）；
+- （**可能是bug**）配置`kuboard-data-pvc`的**<u>命名空间</u>**为`kuboard`；
+
+最后，执行`kubectl apply -f kuboard-v3-storage-class.yaml`命令来安装Kuboard。
+
+#### 12、卸载Kubernetes集群
 
 ```
 kubeadm reset
 # kubectl delete node k8s-node1
 ```
 
-#### 11、FAQ
+#### 13、FAQ
 
 - `Unable to connect to the server: tls: failed to verify certificate: x509: certificate signed by unknown authority (possibly because of "crypto/rsa: verification error" while trying to verify candidate authority certificate "kubernetes")`
 
   由于keepalived创建的VIP可能飘移在其他的Maser节点上，在加入该Master节点之前，通过`k8s-vip:16443`访问Kubernetes API Server可能会报上述错误。
 
-#### 12、常用的Kubernetes排错方法
+#### 14、常用的Kubernetes排错方法
 
 ```
 lsof -i:6443
