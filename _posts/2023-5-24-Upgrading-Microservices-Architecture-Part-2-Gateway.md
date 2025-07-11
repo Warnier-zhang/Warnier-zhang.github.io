@@ -86,7 +86,7 @@ Kubernetes Ingress不单单指Ingress，实际上，包括Ingress和Ingress Cont
    > 若出现`Internal error occurred: failed calling webhook "validate.nginx.ingress.kubernetes.io": Post "https://ingress-nginx-controller-admission.ingress-nginx.svc:443/networking/v1/ingresses?timeout=10s": Bad Gateway`错误，则执行如下命令：
    >
    > ```
-   > kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+   > kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission -n XXX
    > ```
 
 3. 测试访问集群内的Service：
