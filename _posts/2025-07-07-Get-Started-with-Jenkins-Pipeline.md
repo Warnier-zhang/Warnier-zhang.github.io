@@ -96,3 +96,8 @@ stages {
 > method org.apache.maven.model.Model getGroupId
 > method org.apache.maven.model.Model getVersion
 > ```
+
+#### 温馨提示
+
+- 需要**引用环境变量、用户参数**等的**字符串**（含代码块）使用**双引号**`"`！！！（例如：`readMavenPom`、`sshPublisher`等）
+- 
