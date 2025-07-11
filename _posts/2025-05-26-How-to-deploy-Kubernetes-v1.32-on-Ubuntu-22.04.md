@@ -424,7 +424,14 @@ export KUBECONFIG=/etc/kubernetes/admin.conf
 >
 > 1. 执行`kubectl delete -f calico.yml`命令删除所有相关的Pod；
 >
-> 2. 在**所有节点**上，执行`rm -rf /etc/cni/net.d/*`命令清除Calico缓存；
+> 2. 在**所有节点**上，执行如下命令清除Calico缓存：
+>
+>    ```
+>    rm -rf /etc/cni/net.d/*
+>    rm -rf /var/lib/calico
+>    rm /opt/cni/bin/calico 
+>    rm /opt/cni/bin/calico-ipam
+>    ```
 >
 > 3. 重启所有节点上的`kubelet`；
 
