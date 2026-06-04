@@ -391,6 +391,81 @@ kubeadm join k8s-vip:16443 --token 98hzyr.569w5qqmywa41uq8 \
         --discovery-token-ca-cert-hash sha256:fa9234b899cda31ca15b85dafc89b0bfe000591c6fc10730212acfe0f2c0fcdd
 ```
 
+#### 7.1 卸载、重新加入Master / Node节点
+
+如果某个Master节点，因为故障需要卸载，故障修复完成之后，需要重新加回到Kubernetes集群，可按如下的步骤操作：
+
+- 卸载节点
+
+  ```
+  kubectl delete node k8s-master2
+  ```
+
+- 重新加入
+
+  1. 执行`kubeadm reset`命令，清除`kubeadm init`或`kubeadm join`痕迹；
+
+  2. 删除历史遗留文件：
+
+     ```
+     rm -rf /root/.kube/ 
+     rm -rf /etc/kubernetes/ 
+     rm -rf /var/lib/kubelet/ 
+     rm -rf /var/lib/etcd/ 
+     rm -rf /var/lib/cni/ 
+     rm -rf /etc/cni/
+     ```
+
+  3. 重启`kubelet`、`containerd`；
+
+  4. 任选一个正常运行的Master节点，执行如下命令生成加入新节点的脚本：
+
+     ```
+     # 生成的certificate-key
+     kubeadm init phase upload-certs --upload-certs
+     
+     # 生成加入新节点脚本
+     kubeadm token create --print-join-command
+     ```
+
+  5. 把**步骤4**中2个命令的执行结果拼接到一起，在新的Master节点上执行即可：
+
+     ```
+     kubeadm join k8s-vip:16643 --token oimopa.sm0kzhsuecgd8ng0 --discovery-token-ca-cert-hash sha256:8709d44f37e46a22a7fc4f06ab35907f15419801481b32304a59bff02ffc8cb6 --control-plane --certificate-key cc197981bb97d8260427d51b3dcc46263c1990ecd6e65426ca1cc6c3c5156b45
+     ```
+
+  > 注意：
+  > 如果在加入新的Master节点时，出现如下错误：
+  >
+  > ```
+  > [check-etcd] Checking that the etcd cluster is healthy
+  > error execution phase check-etcd: etcd cluster is not healthy: failed to dial endpoint https://172.23.157.3:2379 with maintenance client: context deadline exceeded
+  > To see the stack trace of this error execute with --v=5 or higher
+  > ```
+  >
+  > 原因是卸载Master节点时，etcd集群未删除该节点的成员信息，可按照如下步骤处理：
+  >
+  > 1. 执行`kubectl get all -n kube-system`命令查询Kubernetes集群中的etcd Pods；
+  >
+  > 2. 任选一个etcd Pod，执行`kubectl -n kube-system exec -it etcd-k8s-master1 -- sh`命令进入etcd容器中；
+  >
+  > 3. 执行如下命令查看etcd集群成员列表，并删除已卸载的节点：
+  >
+  >    ```
+  >    export ETCDCTL_API=3
+  >    # alias etcdctl='etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key'
+  >    
+  >    # 查看etcd集群成员列表
+  >    etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key member list
+  >    
+  >    # 删除已卸载的节点
+  >    etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key member remove 316cf6ea7e15420c
+  >    ```
+  >
+  > 4. 退出容器；
+  >
+  > 5. 最后按【重新加入】的流程再操作一次即可。
+
 #### 8、配置kubectl连接Kubernetes集群
 
 在Master节点上，执行如下命令即可使kubectl生效：
